@@ -2,7 +2,7 @@ name: 'Base Check'
 description: 'Check for base repository updates'
 
 inputs:
-  githhub_token:
+  github_token:
     description: 'GitHub API Token'
     required: true
 
