@@ -39,6 +39,8 @@ if [[ -z "$ISSUE_ASSIGNEE" ]]; then
   exit 1
 fi
 
+echo ls -al
+
 ## get base repo from ${BASE_REPO_CONFIG_FILE}
 REPO=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.repo)")
 ## get branch name from ${BASE_REPO_CONFIG_FILE}
