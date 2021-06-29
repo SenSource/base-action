@@ -1,4 +1,4 @@
-FROM alpine/git:v2.30.2
+FROM node/14-alpine
 
 ## install gh cli
 RUN mkdir /ghcli && wget -c https://github.com/cli/cli/releases/download/v1.11.0/gh_1.11.0_linux_386.tar.gz -O -| tar --strip-components=1 -C /ghcli -xz && ln -s /ghcli/bin/gh /usr/local/bin/
