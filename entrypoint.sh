@@ -39,14 +39,12 @@ if [[ -z "$ISSUE_ASSIGNEE" ]]; then
   exit 1
 fi
 
-sh -c "ls -al /github/home"
-sh -c "ls -al /github/workspace"
-sh -c "ls -al /github/workflow"
-
-cd /github/workspace
+cd $GITHUB_WORKSPACE
 
 ## get base repo from ${BASE_REPO_CONFIG_FILE}
-REPO=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.repo)")
+USER_REPO=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.repo)" | sed 's/git@github.com://g' )
+REPO="https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${USER_REPO}"
+
 ## get branch name from ${BASE_REPO_CONFIG_FILE}
 BRANCH=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.branch)")
 
