@@ -42,7 +42,7 @@ fi
 cd $GITHUB_WORKSPACE
 
 ## get base repo from ${BASE_REPO_CONFIG_FILE}
-USER_REPO=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.repo)" | sed 's/git@github.com://g' )
+USER_REPO=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.repo)" | sed 's/git@github.com://g' | sed 's/.git//g')
 REPO="https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${USER_REPO}"
 
 ## get branch name from ${BASE_REPO_CONFIG_FILE}
