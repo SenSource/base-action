@@ -1,0 +1,38 @@
+name: 'Base Check'
+description: 'Check for base repository updates'
+
+inputs:
+  githhub_token:
+    description: 'GitHub API Token'
+    required: true
+
+  base_repo_config_file:
+    description: 'Base repo config file (JSON)'
+    required: true
+
+  pr_labels:
+    description: 'Labels to assign to PR'
+    required: true
+
+  pr_reviewer:
+    description: 'Reviewer for PR'
+    required: true
+
+  issue_labels:
+    description: 'Labels to assign to issue if merge conflicts arise'
+    required: true
+
+  issue_assignee:
+    description: 'Assignee for isssue if merge conflicts arise'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    GITHUB_TOKEN: ${{ inputs.github_token }}
+    BASE_REPO_CONFIG_FILE: ${{ inputs.base_repo_config_file }}
+    PR_LABELS: ${{ inputs.pr_labels }}
+    PR_REVIEWER: ${{ inputs.pr_reviewer }}
+    ISSUE_LABELS: ${{ inputs.issue_labels }}
+    ISSUE_ASSIGNEE: ${{ inputs.issue_assignee }}
