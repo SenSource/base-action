@@ -39,9 +39,11 @@ if [[ -z "$ISSUE_ASSIGNEE" ]]; then
   exit 1
 fi
 
-cd $GITHUB_WORKSPACE
+sh -c "ls -al /github/home"
+sh -c "ls -al /github/workspace"
+sh -c "ls -al /github/workflow"
 
-sh -c "ls -al"
+cd /github/workspace
 
 ## get base repo from ${BASE_REPO_CONFIG_FILE}
 REPO=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.repo)")
