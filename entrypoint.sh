@@ -9,7 +9,7 @@ set -o pipefail
 
 mkdir ~/.ssh
 eval "$(ssh-agent -s)" > /dev/null
-echo "${GITHUB_TOKEN}" > ~/.ssh/id_ed25519
+echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
 chmod 600 ~/.ssh/id_ed25519
 
 echo "Adding identity"
@@ -69,7 +69,7 @@ git merge --no-edit base/$BRANCH || FAILED_MERGE=$?
 
 if [ -z ${FAILED_MERGE} ]; then
   echo "Merge succeeded without conflicts. Creating PR"
-  gh pr create --title "🤖 Update from base" --body "Update from base repository" --reviewer "${PR_REVIEWER}" --label "${PR_LABELS}" || PR_FAILED=$?
+  GITHUB_TOKEN=$GITHUB_PA_TOKEN gh pr create --title "🤖 Update from base" --body "Update from base repository" --reviewer "${PR_REVIEWER}" --label "${PR_LABELS}" || PR_FAILED=$?
 
   if [ -z ${PR_FAILED} ]; then
     echo "PR created successfully"
@@ -85,7 +85,7 @@ fi
 ##
 
 echo "Merge failed, likely due to merge conflicts. Creating issue to manually update"
-gh issue create --title "Update from base [manual]" --body "Needs manual update from base to resolve conflicts" --assignee "${ISSUE_ASSIGNEE}" --label "${ISSUE_LABEL}" || ISSUE_FAILED=$?
+GITHUB_TOKEN=$GITHUB_PA_TOKEN gh issue create --title "Update from base [manual]" --body "Needs manual update from base to resolve conflicts" --assignee "${ISSUE_ASSIGNEE}" --label "${ISSUE_LABEL}" || ISSUE_FAILED=$?
 
 if [ -z ${ISSUE_FAILED} ]; then
   echo "Issue created successfully"
