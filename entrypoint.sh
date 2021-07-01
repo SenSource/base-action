@@ -52,6 +52,8 @@ BRANCH=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.branch)
 git remote add base $REPO
 git remote set-url --push base PUSH_DISABLED
 
+git remote -vvv
+
 ## fetch branch from base repo locally
 git fetch base $BRANCH
 
