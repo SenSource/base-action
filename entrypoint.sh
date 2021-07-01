@@ -39,24 +39,24 @@ if [[ -z "$ISSUE_ASSIGNEE" ]]; then
   exit 1
 fi
 
-mkdir ~/.ssh
+# mkdir ~/.ssh
 
-eval "$(ssh-agent -s)"
+# eval "$(ssh-agent -s)"
 
-echo "${GITHUB_TOKEN}" > ~/.ssh/id_ed25519
-chmod 600 ~/.ssh/id_ed25519
+# echo "${GITHUB_TOKEN}" > ~/.ssh/id_ed25519
+# chmod 600 ~/.ssh/id_ed25519
 
-echo "Adding identity"
+# echo "Adding identity"
 
-ssh-add ~/.ssh/id_ed25519
+# ssh-add ~/.ssh/id_ed25519
 
-echo "Added"
+# echo "Added"
 
-echo "Adding github to known hosts"
+# echo "Adding github to known hosts"
 
-ssh -o StrictHostKeyChecking=no git@github.com || IGNORE=1
+# ssh -o StrictHostKeyChecking=no git@github.com || IGNORE=1
 
-echo "Added"
+# echo "Added"
 
 cd $GITHUB_WORKSPACE
 
