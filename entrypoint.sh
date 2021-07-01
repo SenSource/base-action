@@ -60,6 +60,8 @@ echo "Added"
 
 cat ~/.ssh/known_hosts
 
+ssh -T git@github.com
+
 cd $GITHUB_WORKSPACE
 
 ## get base repo from ${BASE_REPO_CONFIG_FILE}
