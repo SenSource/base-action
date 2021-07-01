@@ -61,7 +61,7 @@ fi
 ##
 
 echo "Has changes from base. Creating $UPDATE_BRANCH branch"
-git checkout -b update-from-base
+git checkout -b $UPDATE_BRANCH
 
 echo "Attempting to merge base/$BRANCH"
 ## if merge exits with zero, there were no conflicts

@@ -48,6 +48,8 @@ runs:
     PR_REVIEWER: ${{ inputs.pr_reviewer }}
     ISSUE_LABELS: ${{ inputs.issue_labels }}
     ISSUE_ASSIGNEE: ${{ inputs.issue_assignee }}
-    COMMITTER_NAME: ${{ inputs.committer_name }}
-    COMMITTER_EMAIL: ${{ input.committer_email }}
-    UPDATE_BRANCH: ${{ input.update_branch }}
+    UPDATE_BRANCH: ${{ inputs.update_branch }}
+    GIT_AUTHOR_NAME: ${{ inputs.committer_name }}
+    GIT_AUTHOR_EMAIL: ${{ inputs.committer_email }}
+    GIT_COMMITTER_NAME: ${{ inputs.committer_name }}
+    GIT_COMMITTER_EMAIL: ${{ inputs.committer_email }}
