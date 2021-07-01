@@ -46,15 +46,19 @@ eval "$(ssh-agent -s)"
 echo "${GITHUB_TOKEN}" > ~/.ssh/id_ed25519
 chmod 600 ~/.ssh/id_ed25519
 
-ls ~/.ssh
+echo "Adding identity"
 
 ssh-add ~/.ssh/id_ed25519
 
+echo "Added"
+
+echo "Adding github to known hosts"
+
 ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
 
-cat ~/.ssh/known_hosts
-
 echo "Added"
+
+cat ~/.ssh/known_hosts
 
 cd $GITHUB_WORKSPACE
 
