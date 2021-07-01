@@ -69,7 +69,8 @@ git merge --no-edit base/$BRANCH || FAILED_MERGE=$?
 
 if [ -z ${FAILED_MERGE} ]; then
   echo "Merge succeeded without conflicts. Creating PR"
-  GITHUB_TOKEN=$GITHUB_PA_TOKEN gh pr create --title "🤖 Update from base" --body "Update from base repository" --reviewer "${PR_REVIEWER}" --label "${PR_LABELS}" || PR_FAILED=$?
+  git push -u origin $UPDATE_BRANCH
+  GITHUB_TOKEN=$GITHUB_PA_TOKEN gh pr create --head $UPDATE_BRANCH --title "🤖 Update from base" --body "Update from base repository" --reviewer "${PR_REVIEWER}" --label "${PR_LABELS}" || PR_FAILED=$?
 
   if [ -z ${PR_FAILED} ]; then
     echo "PR created successfully"
