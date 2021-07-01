@@ -60,6 +60,8 @@ echo "Added"
 
 #cat ~/.ssh/known_hosts
 
+ssh -o StrictHostKeyChecking=no git@github.com
+
 ssh -T -v git@github.com
 
 cd $GITHUB_WORKSPACE
