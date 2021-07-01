@@ -86,7 +86,7 @@ fi
 ##
 
 echo "Merge failed, likely due to merge conflicts. Creating issue to manually update"
-GITHUB_TOKEN=$GITHUB_PA_TOKEN gh issue create --title "Update from base [manual]" --body "Needs manual update from base to resolve conflicts" --assignee "${ISSUE_ASSIGNEE}" --label "${ISSUE_LABEL}" || ISSUE_FAILED=$?
+GITHUB_TOKEN=$GITHUB_PA_TOKEN gh issue create --title "Update from base [manual]" --body "Needs manual update from base to resolve conflicts" --assignee "${ISSUE_ASSIGNEE}" --label "${ISSUE_LABELS}" || ISSUE_FAILED=$?
 
 if [ -z ${ISSUE_FAILED} ]; then
   echo "Issue created successfully"
