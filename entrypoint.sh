@@ -48,6 +48,8 @@ REPO="https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${USER_REPO}"
 ## get branch name from ${BASE_REPO_CONFIG_FILE}
 BRANCH=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.branch)")
 
+echo ${GITHUB_TOKEN}
+
 ## set base remote
 git remote add base $REPO
 git remote set-url --push base PUSH_DISABLED
