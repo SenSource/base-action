@@ -54,7 +54,7 @@ echo "Added"
 
 echo "Adding github to known hosts"
 
-ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
+ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 echo "Added"
 
