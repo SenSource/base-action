@@ -44,6 +44,7 @@ mkdir ~/.ssh
 eval "$(ssh-agent -s)"
 
 echo "${GITHUB_TOKEN}" > ~/.ssh/id_ed25519
+chmod 600 ~/.ssh/id_ed25519
 
 ls ~/.ssh
 
