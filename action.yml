@@ -26,6 +26,18 @@ inputs:
     description: 'Assignee for isssue if merge conflicts arise'
     required: true
 
+  committer_name:
+    description: 'Name used for merge commits'
+    required: true
+
+  committer_email:
+    description: 'Email used for merge commits'
+    required: true
+
+  update_branch:
+    description: 'Branch name for updates'
+    required: true
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -36,3 +48,6 @@ runs:
     PR_REVIEWER: ${{ inputs.pr_reviewer }}
     ISSUE_LABELS: ${{ inputs.issue_labels }}
     ISSUE_ASSIGNEE: ${{ inputs.issue_assignee }}
+    COMMITTER_NAME: ${{ inputs.committer_name }}
+    COMMITTER_EMAIL: ${{ input.committer_email }}
+    UPDATE_BRANCH: ${{ input.update_branch }}

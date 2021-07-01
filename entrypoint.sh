@@ -3,60 +3,28 @@
 set -e
 set -o pipefail
 
-## GitHub token input from action
-if [[ -z "$GITHUB_TOKEN" ]]; then
-  echo "Set the GITHUB_TOKEN environment variable"
-  exit 1
-fi
-
-## Base repo config file from action
-if [[ -z "$BASE_REPO_CONFIG_FILE" ]]; then
-  echo "Set the BASE_REPO_CONFIG_FILE environment variable"
-  exit 1
-fi
-
-## PR labels from action
-if [[ -z "$PR_LABELS" ]]; then
-  echo "Set the PR_LABELS environment variable"
-  exit 1
-fi
-
-## PR reviewer from action
-if [[ -z "$PR_REVIEWER" ]]; then
-  echo "Set the PR_REVIEWER environment variable"
-  exit 1
-fi
-
-## Issue labels from action
-if [[ -z "$ISSUE_LABELS" ]]; then
-  echo "Set the ISSUE_LABELS environment variable"
-  exit 1
-fi
-
-## Issue assignee from action
-if [[ -z "$ISSUE_ASSIGNEE" ]]; then
-  echo "Set the ISSUE_ASSIGNEE environment variable"
-  exit 1
-fi
+##
+## Set up SSH access to GitHub for fetching base repository and merging
+##
 
 mkdir ~/.ssh
-
-eval "$(ssh-agent -s)"
-
+eval "$(ssh-agent -s)" > /dev/null
 echo "${GITHUB_TOKEN}" > ~/.ssh/id_ed25519
 chmod 600 ~/.ssh/id_ed25519
 
 echo "Adding identity"
-
-ssh-add ~/.ssh/id_ed25519
-
+ssh-add ~/.ssh/id_ed25519 > /dev/null
 echo "Added"
 
-echo "Adding github to known hosts"
-
-ssh -o StrictHostKeyChecking=no git@github.com || IGNORE=1
-
+echo "Adding GitHub to known_hosts"
+## we know this will fail because you can't log in to a shell at github.com
+## but it adds the host key to known_hosts; adding manually failed to work
+ssh -o StrictHostKeyChecking=no git@github.com > /dev/null || IGNORE=1
 echo "Added"
+
+##
+## Setting up base repository as a remote
+##
 
 cd $GITHUB_WORKSPACE
 
@@ -72,17 +40,15 @@ echo "Adding base repo $REPO"
 git remote add base $REPO
 git remote set-url --push base PUSH_DISABLED
 
-echo "Fetching base $BRANCH"
+##
+## Fetching the base branch and checking for changes
+##
 
-## fetch branch from base repo locally
+echo "Fetching base $BRANCH"
 git fetch base $BRANCH
 
 echo "Checking for changes"
-
-## check for changes
 git log --oneline --exit-code master..base/$BRANCH > /dev/null || HAS_CHANGES=$?
-
-echo "HAS_CHANGES=$HAS_CHANGES"
 
 if [[ ${HAS_CHANGES} -eq 0 ]]; then
   echo "No changes from base. Exiting..."
@@ -90,34 +56,40 @@ if [[ ${HAS_CHANGES} -eq 0 ]]; then
   exit 0
 fi
 
-echo "Has changes from base. Creating branch"
+##
+## Attempt to merge changes and create a PR
+##
 
+echo "Has changes from base. Creating $UPDATE_BRANCH branch"
 git checkout -b update-from-base
 
 echo "Attempting to merge base/$BRANCH"
-
 ## if merge exits with zero, there were no conflicts
 git merge --no-edit base/$BRANCH || FAILED_MERGE=$?
 
-echo "FAILED_MERGE=$FAILED_MERGE"
-
-exit 1
-
 if [[ ${FAILED_MERGE} -eq 0 ]]; then
+  echo "Merge succeeded without conflicts. Creating PR"
   gh pr create --title "🤖 Update from base" --body "Update from base repository" --reviewer "${PR_REVIEWER}" --label "${PR_LABELS}" || PR_FAILED=$?
 
   if [[ ${PR_FAILED} -ne 0 ]]; then
     echo "PR creation failed"
     exit 1
   else
+    echo "PR created successfully"
     exit 0
   fi
 fi
 
-## create issue to manually update from base and fix merge conflicts
+##
+## Fall back to creating an issue to manually update, if the merge failed
+##
+
+echo "Merge failed, likely due to merge conflicts. Creating issue to manually update"
 gh issue create --title "Update from base [manual]" --body "Needs manual update from base to resolve conflicts" --assignee "${ISSUE_ASSIGNEE}" --label "${ISSUE_LABEL}" || ISSUE_FAILED=$?
 
 if [[ ${ISSUE_FAILED} -ne 0 ]]; then
   echo "Issue creation failed"
   exit 1
 fi
+
+echo "Issue created successfully"
