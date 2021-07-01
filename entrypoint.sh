@@ -52,11 +52,11 @@ ssh-add ~/.ssh/id_ed25519
 
 echo "Added"
 
-echo "Adding github to known hosts"
+#echo "Adding github to known hosts"
 
-ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+#ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
-echo "Added"
+#echo "Added"
 
 cat ~/.ssh/known_hosts
 
