@@ -43,18 +43,14 @@ cd $GITHUB_WORKSPACE
 
 ## get base repo from ${BASE_REPO_CONFIG_FILE}
 USER_REPO=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.repo)" | sed 's/git@github.com://g' | sed 's/.git//g')
-REPO="https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${USER_REPO}"
+REPO="https://${GITHUB_TOKEN}@github.com/${USER_REPO}"
 
 ## get branch name from ${BASE_REPO_CONFIG_FILE}
 BRANCH=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.branch)")
 
-echo ${GITHUB_TOKEN}
-
 ## set base remote
 git remote add base $REPO
 git remote set-url --push base PUSH_DISABLED
-
-git remote -vvv
 
 ## fetch branch from base repo locally
 git fetch base $BRANCH
