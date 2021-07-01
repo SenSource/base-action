@@ -50,7 +50,7 @@ ls ~/.ssh
 
 ssh-add ~/.ssh/id_ed25519
 
-ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
 
 cat ~/.ssh/known_hosts
 
