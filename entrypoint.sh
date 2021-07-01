@@ -39,7 +39,7 @@ if [[ -z "$ISSUE_ASSIGNEE" ]]; then
   exit 1
 fi
 
-ls ~/.ssh
+mkdir ~/.ssh
 
 eval "$(ssh-agent -s)"
 
