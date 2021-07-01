@@ -54,7 +54,7 @@ echo "Added"
 
 echo "Adding github to known hosts"
 
-ssh -o StrictHostKeyChecking=no git@github.com
+ssh -o StrictHostKeyChecking=no git@github.com || IGNORE=1
 
 echo "Added"
 
