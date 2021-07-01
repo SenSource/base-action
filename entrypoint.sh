@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh -l
 
 set -e
+set -o pipefail
 
 ##
 ## Set up SSH access to GitHub for fetching base repository and merging
