@@ -82,7 +82,7 @@ if [ -z ${FAILED_MERGE} ]; then
 fi
 
 ##
-## Fall back to creating an issue to manually update, if the merge failed
+## Fall back to creating an issue to manually update if the merge failed
 ##
 
 echo "Merge failed, likely due to merge conflicts. Creating issue to manually update"
