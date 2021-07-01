@@ -39,11 +39,16 @@ if [[ -z "$ISSUE_ASSIGNEE" ]]; then
   exit 1
 fi
 
+eval "$(ssh-agent -s)"
+
+echo "${GITHUB_TOKEN}" > ~/.ssh/id_ed25519
+
+ssh-add ~/.ssh/id_ed25519
+
 cd $GITHUB_WORKSPACE
 
 ## get base repo from ${BASE_REPO_CONFIG_FILE}
-USER_REPO=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.repo)" | sed 's/git@github.com://g' | sed 's/.git//g')
-REPO="https://${GITHUB_TOKEN}@github.com/${USER_REPO}"
+REPO=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.repo)")
 
 ## get branch name from ${BASE_REPO_CONFIG_FILE}
 BRANCH=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.branch)")
