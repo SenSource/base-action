@@ -80,6 +80,7 @@ git fetch base $BRANCH
 echo "Checking for changes"
 
 ## check for changes
+git log --oneline --exit-code master..base/$BRANCH
 git log --oneline --exit-code master..base/$BRANCH > /dev/null || HAS_CHANGES=$?
 
 echo "HAS_CHANGES=$HAS_CHANGES"
