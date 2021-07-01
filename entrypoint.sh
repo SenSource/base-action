@@ -39,11 +39,17 @@ if [[ -z "$ISSUE_ASSIGNEE" ]]; then
   exit 1
 fi
 
+ls ~/.ssh
+
 eval "$(ssh-agent -s)"
 
 echo "${GITHUB_TOKEN}" > ~/.ssh/id_ed25519
 
+ls ~/.ssh
+
 ssh-add ~/.ssh/id_ed25519
+
+echo "Added"
 
 cd $GITHUB_WORKSPACE
 
@@ -52,6 +58,8 @@ REPO=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.repo)")
 
 ## get branch name from ${BASE_REPO_CONFIG_FILE}
 BRANCH=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.branch)")
+
+echo "Adding base repo $REPO"
 
 ## set base remote
 git remote add base $REPO
