@@ -50,6 +50,10 @@ ls ~/.ssh
 
 ssh-add ~/.ssh/id_ed25519
 
+ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+
+cat ~/.ssh/known_hosts
+
 echo "Added"
 
 cd $GITHUB_WORKSPACE
