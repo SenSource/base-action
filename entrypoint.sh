@@ -72,20 +72,36 @@ echo "Adding base repo $REPO"
 git remote add base $REPO
 git remote set-url --push base PUSH_DISABLED
 
+echo "Fetching base $BRANCH"
+
 ## fetch branch from base repo locally
 git fetch base $BRANCH
+
+echo "Checking for changes"
 
 ## check for changes
 git log --oneline --exit-code master..base/$BRANCH > /dev/null || HAS_CHANGES=$?
 
+echo "HAS_CHANGES=$HAS_CHANGES"
+
 if [[ ${HAS_CHANGES} -eq 0 ]]; then
+  echo "No changes from base. Exiting..."
+
   exit 0
 fi
 
+echo "Has changes from base. Creating branch"
+
 git checkout -b update-from-base
+
+echo "Merging with ff-only base/$BRANCH"
 
 ## if merge exits with zero, there were no conflicts
 git merge --ff-only base/$BRANCH || FAILED_FAST_FORWARD=$?
+
+echo "FAILED_FAST_FORWARD=$FAILED_FAST_FORWARD"
+
+exit 1
 
 if [[ ${FAILED_FAST_FORWARD} -eq 0 ]]; then
   gh pr create --title "🤖 Update from base" --body "Update from base repository" --reviewer "${PR_REVIEWER}" --label "${PR_LABELS}" || PR_FAILED=$?
