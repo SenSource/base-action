@@ -60,7 +60,7 @@ echo "Added"
 
 cat ~/.ssh/known_hosts
 
-ssh -T git@github.com
+ssh -T -v git@github.com
 
 cd $GITHUB_WORKSPACE
 
