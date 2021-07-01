@@ -58,7 +58,7 @@ echo "Added"
 
 #echo "Added"
 
-cat ~/.ssh/known_hosts
+#cat ~/.ssh/known_hosts
 
 ssh -T -v git@github.com
 
