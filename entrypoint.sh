@@ -94,16 +94,16 @@ echo "Has changes from base. Creating branch"
 
 git checkout -b update-from-base
 
-echo "Merging with ff-only base/$BRANCH"
+echo "Attempting to merge base/$BRANCH"
 
 ## if merge exits with zero, there were no conflicts
-git merge --ff-only base/$BRANCH || FAILED_FAST_FORWARD=$?
+git merge --no-edit base/$BRANCH || FAILED_MERGE=$?
 
-echo "FAILED_FAST_FORWARD=$FAILED_FAST_FORWARD"
+echo "FAILED_MERGE=$FAILED_MERGE"
 
 exit 1
 
-if [[ ${FAILED_FAST_FORWARD} -eq 0 ]]; then
+if [[ ${FAILED_MERGE} -eq 0 ]]; then
   gh pr create --title "🤖 Update from base" --body "Update from base repository" --reviewer "${PR_REVIEWER}" --label "${PR_LABELS}" || PR_FAILED=$?
 
   if [[ ${PR_FAILED} -ne 0 ]]; then
