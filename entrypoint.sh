@@ -50,7 +50,7 @@ git fetch base $BRANCH
 echo "Checking for changes"
 git log --oneline --exit-code master..base/$BRANCH > /dev/null || HAS_CHANGES=$?
 
-if [[ ${HAS_CHANGES} -eq 0 ]]; then
+if [ -z ${HAS_CHANGES} ]; then
   echo "No changes from base. Exiting..."
 
   exit 0
@@ -67,16 +67,16 @@ echo "Attempting to merge base/$BRANCH"
 ## if merge exits with zero, there were no conflicts
 git merge --no-edit base/$BRANCH || FAILED_MERGE=$?
 
-if [[ ${FAILED_MERGE} -eq 0 ]]; then
+if [ -z ${FAILED_MERGE} ]; then
   echo "Merge succeeded without conflicts. Creating PR"
   gh pr create --title "🤖 Update from base" --body "Update from base repository" --reviewer "${PR_REVIEWER}" --label "${PR_LABELS}" || PR_FAILED=$?
 
-  if [[ ${PR_FAILED} -ne 0 ]]; then
-    echo "PR creation failed"
-    exit 1
-  else
+  if [ -z ${PR_FAILED} ]; then
     echo "PR created successfully"
     exit 0
+  else
+    echo "PR creation failed"
+    exit 1
   fi
 fi
 
@@ -87,9 +87,11 @@ fi
 echo "Merge failed, likely due to merge conflicts. Creating issue to manually update"
 gh issue create --title "Update from base [manual]" --body "Needs manual update from base to resolve conflicts" --assignee "${ISSUE_ASSIGNEE}" --label "${ISSUE_LABEL}" || ISSUE_FAILED=$?
 
-if [[ ${ISSUE_FAILED} -ne 0 ]]; then
+if [ -z ${ISSUE_FAILED} ]; then
+  echo "Issue created successfully"
+  exit 0
+else
   echo "Issue creation failed"
   exit 1
 fi
 
-echo "Issue created successfully"
