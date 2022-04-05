@@ -90,8 +90,16 @@ if [ -z ${FAILED_MERGE} ]; then
   fi
   
   echo "Creating PR"
+  BASE_PR_TEMPLATE=$(cat ./.github/PULL_REQUEST_TEMPLATE/update-from-base.md)
+  
   git push -u origin $UPDATE_BRANCH
-  GITHUB_TOKEN=$GITHUB_PA_TOKEN gh pr create --head $UPDATE_BRANCH --title "🤖 Update from base" --body "Update from base repository" --reviewer "${PR_REVIEWER}" --label "${PR_LABELS}" || PR_FAILED=$?
+
+  GITHUB_TOKEN=$GITHUB_PA_TOKEN gh pr create \
+    --head $UPDATE_BRANCH \
+    --title "🤖 Update from base" \
+    --body "${BASE_PR_TEMPLATE}" \
+    --reviewer "${PR_REVIEWER}" \
+    --label "${PR_LABELS}" || PR_FAILED=$?
 
   if [ -z ${PR_FAILED} ]; then
     echo "PR created successfully"
@@ -100,7 +108,10 @@ if [ -z ${FAILED_MERGE} ]; then
     echo "PR creation failed"
     ## let fall through to issue creation
     ## exit 1
+    ISSUE_CREATE_REASON="Automatic PR creation failed"
   fi
+else
+  ISSUE_CREATE_REASON="Base merge has conflicts"
 fi
 
 ##
@@ -108,7 +119,11 @@ fi
 ##
 
 echo "Merge failed, likely due to merge conflicts. Creating issue to manually update"
-GITHUB_TOKEN=$GITHUB_PA_TOKEN gh issue create --title "Update from base [manual]" --body "Needs manual update from base to resolve conflicts" --assignee "${ISSUE_ASSIGNEE}" --label "${ISSUE_LABELS}" || ISSUE_FAILED=$?
+GITHUB_TOKEN=$GITHUB_PA_TOKEN gh issue create \
+  --title "Update from base [manual]" \
+  --body "Automatic base update failed. ${ISSUE_CREATE_REASON}. Needs manual update from base." \
+  --assignee "${ISSUE_ASSIGNEE}" \
+  --label "${ISSUE_LABELS}" || ISSUE_FAILED=$?
 
 if [ -z ${ISSUE_FAILED} ]; then
   echo "Issue created successfully"
