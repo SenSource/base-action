@@ -68,7 +68,24 @@ echo "Attempting to merge base/$BRANCH"
 git merge --no-edit base/$BRANCH || FAILED_MERGE=$?
 
 if [ -z ${FAILED_MERGE} ]; then
-  echo "Merge succeeded without conflicts. Creating PR"
+  echo "Merge succeeded without conflicts"
+  
+  echo "Updating lockfile"
+  rm yarn.lock && yarn install
+  
+  echo "Rebuilding"
+  yarn run clean && yarn run build
+  
+  echo "Checking for necessary updates"
+  git diff --no-ext-diff --quiet --exit-code || HAS_NEW_CHANGES=$?
+  
+  if [ -z ${HAS_NEW_CHANGES} ]; then
+    echo "Adding changes"
+    git add lib && git add yarn.lock
+    git commit -m "Build and lockfile changes from base update"
+  fi
+  
+  echo "Creating PR"
   git push -u origin $UPDATE_BRANCH
   GITHUB_TOKEN=$GITHUB_PA_TOKEN gh pr create --head $UPDATE_BRANCH --title "🤖 Update from base" --body "Update from base repository" --reviewer "${PR_REVIEWER}" --label "${PR_LABELS}" || PR_FAILED=$?
 
@@ -77,7 +94,8 @@ if [ -z ${FAILED_MERGE} ]; then
     exit 0
   else
     echo "PR creation failed"
-    exit 1
+    ## let fall through to issue creation
+    ## exit 1
   fi
 fi
 
