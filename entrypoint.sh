@@ -69,7 +69,7 @@ git merge --no-edit base/$BRANCH || FAILED_MERGE=$?
 
 if [ -z ${FAILED_MERGE} ]; then
   echo "Merge succeeded without conflicts"
-  
+
   echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
   
   echo "Updating lockfile"
@@ -81,10 +81,12 @@ if [ -z ${FAILED_MERGE} ]; then
   echo "Checking for necessary updates"
   git diff --no-ext-diff --quiet --exit-code || HAS_NEW_CHANGES=$?
   
-  if [ -z ${HAS_NEW_CHANGES} ]; then
+  if [ -n ${HAS_NEW_CHANGES} ]; then
     echo "Adding changes"
     git add lib && git add yarn.lock
     git commit -m "Build and lockfile changes from base update"
+  else
+    echo "No changes found"
   fi
   
   echo "Creating PR"
