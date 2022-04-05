@@ -10,6 +10,10 @@ inputs:
     description: 'Personal access token (repo scope) for GH CLI access'
     required: true
 
+  npm_token:
+    description: 'NPM token for private repo installs'
+    required: true
+
   base_repo_config_file:
     description: 'Base repo config file (JSON)'
     required: true
@@ -48,6 +52,7 @@ runs:
   env:
     SSH_PRIVATE_KEY: ${{ inputs.ssh_private_key }}
     GITHUB_PA_TOKEN: ${{ inputs.github_pa_token }}
+    NPM_TOKEN: ${{ inputs.npm_token }}
     BASE_REPO_CONFIG_FILE: ${{ inputs.base_repo_config_file }}
     PR_LABELS: ${{ inputs.pr_labels }}
     PR_REVIEWER: ${{ inputs.pr_reviewer }}
