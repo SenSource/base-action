@@ -36,6 +36,10 @@ BRANCH=$(node -e "console.log(require('./${BASE_REPO_CONFIG_FILE}').base.branch)
 
 echo "Adding base repo $REPO"
 
+# Fix issue similar to https://github.com/actions/checkout/issues/760
+# caused by https://github.blog/2022-04-12-git-security-vulnerability-announced/
+git config --global --add safe.directory /github/workspace
+
 ## set base remote
 git remote add base $REPO
 git remote set-url --push base PUSH_DISABLED
