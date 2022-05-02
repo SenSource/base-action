@@ -73,6 +73,11 @@ git merge --no-edit base/$BRANCH || FAILED_MERGE=$?
 
 if [ -z ${FAILED_MERGE} ]; then
   echo "Merge succeeded without conflicts"
+
+  if [ -n "${NPM_TOKEN}" ]; then
+    echo "You provided an NPM_TOKEN, writing to ~/.npmrc"
+    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+  fi
   
   echo "Updating lockfile"
   rm yarn.lock && yarn install

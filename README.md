@@ -4,9 +4,17 @@ Checks for changes in the base repository and opens a PR to merge those changes
 
 ## Inputs
 
-### `github_token`
+### `ssh_private_key`
 
-**Required** The GitHub API token
+**Required** SSH private key for GitHub access
+
+### `github_pa_token`
+
+**Required** GitHub personal access token (repo scope) for GH CLI access
+
+### `npm_token`
+
+**Optional** NPM token if you have private repositories that you need to install for the PR to run
 
 ### `base_repo_config_file`
 
@@ -38,6 +46,14 @@ Example required config:
 ### `issue_assignee`
 
 **Required** User/group to assign to the issue (see https://cli.github.com/manual/gh_issue_create)
+
+### `committer_email`
+
+**Required** Email used for merge commits
+
+### `update_branch`
+
+**Required** Branch name for updates
 
 ## Outputs
 
