@@ -86,11 +86,12 @@ if [ -z ${FAILED_MERGE} ]; then
   yarn run clean && yarn run build
   
   echo "Checking for necessary updates"
+  git add -N .
   git diff --no-ext-diff --quiet --exit-code || HAS_NEW_CHANGES=$?
   
-  if [ -z ${HAS_NEW_CHANGES} ]; then
-    echo "Adding changes"
-    git add lib && git add yarn.lock
+  if [ -n "${HAS_NEW_CHANGES}" ]; then
+    echo "Committing changes"
+    git add .
     git commit -m "Build and lockfile changes from base update"
   fi
   
