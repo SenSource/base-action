@@ -67,7 +67,7 @@ jobs:
       ## plain build for pull-requests
       - name: Docker Buildx (build)
         uses: docker/build-push-action@v2
-        if: success() && !contains(github.ref, 'master')
+        if: success() && !contains(github.ref, 'master') && github.event_name != 'release'
         with:
           push: false
           context: ./${{ matrix.docker-file.path }}
@@ -77,15 +77,16 @@ jobs:
 
       ## login to DockerHub for publishing (https://github.com/docker/login-action)
       - name: Login to DockerHub
+        if: success() && (contains(github.ref, 'master') || github.event_name == 'release')
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      ## build and publish when executing on master
+      ## build and publish when executing on master or on publishing a release
       - name: Docker Buildx (push)
         uses: docker/build-push-action@v2
-        if: success() && contains(github.ref, 'master')
+        if: success() && (contains(github.ref, 'master') || github.event_name == 'release')
         with:
           push: true
           context: ./${{ matrix.docker-file.path }}
@@ -95,7 +96,7 @@ jobs:
 
       ## run inspect when executing on master
       - name: Inspect Image
-        if: always() && github.event_name != 'pull_request' && contains(github.ref, 'master')
+        if: always() && github.event_name != 'pull_request'
         run: |
           docker buildx imagetools inspect ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}
 
