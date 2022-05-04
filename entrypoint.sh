@@ -3,6 +3,9 @@
 set -e
 set -o pipefail
 
+## needed for headless browser tests
+export CHROME_BIN='/usr/bin/chromium'
+
 ##
 ## Set up SSH access to GitHub for fetching base repository and merging
 ##
