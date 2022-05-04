@@ -35,7 +35,7 @@ jobs:
       - name: Prepare
         id: prepare
         run: |
-          DOCKER_IMAGE="sensource/${IMAGE_NAME}"
+          DOCKER_IMAGE="${IMAGE_NAME}"
           TEMP="${{ matrix.docker-file.tags }}"
           TAGZ=($TEMP)
           VERSION=${TAGZ[0]}
