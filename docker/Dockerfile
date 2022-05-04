@@ -6,9 +6,11 @@ FROM node:gallium-alpine3.14
 RUN apk update && apk upgrade && \
   echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
   echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
-  ## install git & openssh
-  ## install Chrome for headless browser for testing client apps
-  apk add --no-cache git openssh chromium@edge nss@edge && \
+  apk add --no-cache \
+    ## install git & openssh
+    git openssh \
+    ## install Chrome for headless browser for testing client apps
+    libstdc++@edge chromium@edge nss@edge && \
   ## install GitHub CLI
   mkdir /ghcli && \
   wget -c https://github.com/cli/cli/releases/download/v1.11.0/gh_1.11.0_linux_386.tar.gz -O -| tar --strip-components=1 -C /ghcli -xz && \
