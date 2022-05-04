@@ -10,7 +10,6 @@ RUN apk -U upgrade \
   openssh \
   ## install chromium for headless browser for testing client apps
   chromium \
-  && export CHROME_BIN='/usr/bin/chromium' \
   ## install GitHub CLI
   && mkdir /ghcli \
   && wget -c https://github.com/cli/cli/releases/download/v1.11.0/gh_1.11.0_linux_386.tar.gz -O -| tar --strip-components=1 -C /ghcli -xz \
