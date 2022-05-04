@@ -1,8 +1,4 @@
-## FROM node:14-alpine
-FROM timbru31/node-alpine-git:14
-
-## install gh cli
-RUN mkdir /ghcli && wget -c https://github.com/cli/cli/releases/download/v1.11.0/gh_1.11.0_linux_386.tar.gz -O -| tar --strip-components=1 -C /ghcli -xz && ln -s /ghcli/bin/gh /usr/local/bin/
+FROM sensource/base-action:lts
 
 COPY entrypoint.sh /entrypoint.sh
 
