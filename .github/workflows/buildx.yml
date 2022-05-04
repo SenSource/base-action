@@ -12,9 +12,6 @@ on:
   release:
     types: [published]
 
-env:
-  IMAGE_NAME: ${{ github.repository }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,7 +32,7 @@ jobs:
       - name: Prepare
         id: prepare
         run: |
-          DOCKER_IMAGE="${IMAGE_NAME}"
+          DOCKER_IMAGE=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
           TEMP="${{ matrix.docker-file.tags }}"
           TAGZ=($TEMP)
           VERSION=${TAGZ[0]}
