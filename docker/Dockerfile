@@ -1,5 +1,5 @@
-## Based on timbru31/node-alpine-git:20
-## https://github.com/timbru31/docker-node-alpine-git/blob/master/20/Dockerfile
+## Based on timbru31/node-alpine-git:16
+## https://github.com/timbru31/docker-node-alpine-git/blob/master/16/Dockerfile
 
 FROM node:iron-alpine3.19
 
