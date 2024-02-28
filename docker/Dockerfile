@@ -1,7 +1,7 @@
 ## Based on timbru31/node-alpine-git:16
 ## https://github.com/timbru31/docker-node-alpine-git/blob/master/16/Dockerfile
 
-FROM node:gallium-alpine3.14
+FROM node:iron-alpine3.19
 
 RUN apk update && apk upgrade && \
   apk add --no-cache \
